@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!--    <meta property="og:image" content="https://avivnavon.github.io/ParetoHN/resources/mmnist_fashion_and_mnist_evolve.png" />-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Learning the Pareto Front with Hypernetworks">
+    <meta name="author" content="
+    Aviv Shamsian,
+    Aviv Navon,
+    Ethan Fetaya,
+    Gal Chechik"
+    >
+    <title>Personalized Federated Learning using Hypernetworks</title>
+	<link rel="canonical" href="https://avivsham.github.io/pfedhn.html" />
+    <!-- Bootstrap core CSS -->
+    <!--link href="bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="bootstrap/4.5.0/css/bootstrap.min.css" >
+    <!-- Custom styles for this template -->
+    <link href="pfedhn/offcanvas.css" rel="stylesheet">
+</head>
+<!-- MathJax -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="npm/mathjax-3/es5/tex-svg.js">
+</script>
+<body>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container"></div>
+    <!-- <h1> <b>!!!WIP!!!</b> </h1> -->
+    <h1>Personalized Federated Learning using Hypernetworks</h1>
+<!--    <h3>ICLR 2021</h3>-->
+    <hr>
+    <p class="authors">
+        <tr>
+            <span style="font-size:24px"><a href="index.html">Aviv Shamsian*</a><sup>1</sup></span>&nbsp;
+            <span style="font-size:24px"><a href="https://avivnavon.github.io/">Aviv Navon*</a><sup>1</sup></span> &nbsp;
+        <tr>
+            <span style="font-size:24px"><a href="http://www.eng.biu.ac.il/fetayae/">Ethan Fetaya</a><sup>1</sup></span> &nbsp;
+            <span style="font-size:24px"><a href="https://chechiklab.biu.ac.il/">Gal Chechik</a><sup>1,2</sup></span> &nbsp;
+    </tr>
+    </p>
+    <span style="font-size:18px">* equal contribution</span>
+    <br>
+    <br>
+    <table align=center>
+        <tr>
+            <td align=center>
+                <center>
+                    <span style="font-size:20px">
+                        <sup>1</sup>Bar-Ilan University
+                        <br>
+                        <sup>2</sup>NVIDIA Research
+                    </span>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <div class="btn-group" role="group" aria-label="Top menu">
+        <a class="btn btn-primary" href="https://arxiv.org/abs/2103.04628">Paper</a>
+        <a class="btn btn-primary" href="https://github.com/AvivSham/pFedHN">Code</a>
+    </div>
+</div>
+<div class="container">
+    <div class="section">
+         <figure>
+            <center>
+                <figcaption>Figure 1. Personalized Federated Hypernetwork (<i>pFedHN</i>) framework.</figcaption>
+                <img src="pfedhn/resources/pfedhn.PNG" align="middle" style='max-width: 100%'>
+            </center>
+        </figure>
+        <hr>
+        <p>
+            Personalized federated learning is tasked with training machine learning models for multiple clients, each with its own data distribution.
+            The goal is to collaboratively train personalized models while accounting for the data disparity across clients and reducing communication costs.
+            <br>
+            <br>
+            We propose a novel approach to handle this problem using hypernetworks, termed <i>pFedHN</i> for <i>personalized Federated HyperNetworks</i>. In this approach, a central hypernetwork model is trained to generate a set of models, one model for each client.
+            This architecture provides effective parameter-sharing across clients while maintaining the capacity to generate unique and diverse personal models.
+            Furthermore, since hypernetwork parameters are never transmitted, this approach decouples communication cost from the trainable model size.
+            We test pFedHN empirically in several personalized federated learning challenges and find that it outperforms previous methods.
+            Finally,  we show that pFedHN can generalize better to new clients whose distribution differ from any client observed during training.
+        </p>
+    </div>
+    <div class="section">
+        <h2>Federated Learning</h2>
+        <hr>
+        <p>
+            Federated learning (FL) aims to train a model over multiple disjoint local datasets.
+            It is particularly useful when local data cannot be shared due to privacy, storage, or communication concerns.
+            This is the case for instance, in IoT applications that create large amounts of data at edge devices, or with medical data that cannot be shared due to privacy.
+            In federated learning, all clients collectively train a shared model without sharing data and while trying to minimize communication.
+        </p>
+    </div>
+    <div class="section">
+        <h2>Personalized Federated Learning</h2>
+        <hr>
+        <p>
+            One issue with FL is that training a single, global model cannot capture variability in the distribution of samples across clients.
+            To handle this heterogeneity across clients, <i>Federated Learning</i> (PFL) allows each client to use a <i>personalized</i> model instead of a shared global model.
+            The key challenge in PFL is to benefit from joint training while allowing each client to keep its own unique model and at the same time limit communication cost.
+        </p>
+    </div>
+    <div class="section">
+        <hr>
+        <h2>Personalized Federated Hypernetworks (pFedHN)</h2>
+        <hr>
+        <p>
+            In this work, we propose using a single hypernetwok, termed Personalized Federated Hypernetworks (pFedHN), to learn personalized model for each client.
+            PHN acts on client's embedding vector, that implicitly represents the data distribution of specific client, to produce the weights of a local network.
+            In addition, we present pFedHN-PC ,a variant of pFedHN, that produces the feature extraction of the target network while learning a local classifier for each client.
+            pFedHN and pFedHN-PC outperforms previous works in several FL setups and generalizes better to new clients with unseen data distributions.
+        </p>
+    </div>
+    <div class="section">
+        <center><h2>Experiments</h2></center>
+        <hr>
+        <h3>Heterogeneous Data</h3>
+        <hr>
+        <p>
+            <figure>
+            <center>
+                <figcaption>Table 1. <i>Heterogeneous data</i>. Test accuracy over 10,50,100 clients on the CIFAR10, CIFAR100, and Omniglot datasets.</figcaption>
+                <img src="pfedhn/resources/hetro_table.PNG" align="middle" style='max-width: 100%'>
+            </center>
+            </figure>
+        We compare pFedHN to previous works on non-iid data distribution using CIFAR10/100 and Omniglot datasets.
+        The results are presented in Table 1. pFedHN achieves large improvements of 2%-10% over all competing approaches.
+        Also, we show significant improvement using pFedHN-PC.
+        </p>
+    <!-- <div class="section"> -->
+        <br>
+        <h3>Computational Budget</h3>
+        <hr>
+        <p>
+            <figure>
+            <center>
+                <figcaption>Table 2. <i>Computational budget.</i> Test accuracy for CIFAR10/100 with 75 clients and varying computational capacities.</figcaption>
+                <img src="pfedhn/resources/compo_table.PNG" align="middle" style='max-width: 80%'>
+            </center>
+            </figure>
+        One major challenge presented by personalized FL is that the communication, storage, and computational resources of clients may differ significantly.
+        Unfortunately, previous works do not address this resource heterogeneity.
+        pFedHN can naturally adapt to this challenging learning setup, by producing target networks of different sizes.
+        We evaluate pFedHN using 75 clients divided into tree equal sized groups each with different target network size (Small, Medium, Large).
+        The results are presented in Table 2, showing that pFedHN achieves 4%-8% improvement over all competing methods.
+        The results demonstrate the flexibility of our approach, which is capable of adjusting to different client settings while maintaining high accuracy.
+        </p>
+    </div>
+    <!-- <div class="section"> -->
+        <br>
+        <h3>Generalization to Novel Clients</h3>
+        <hr>
+        <p>
+            <figure>
+            <center>
+                <figcaption>Figure 2. <i>Generalization to novel clients.</i> The generalization gap accuracy between training and novel clients.</figcaption>
+                <img src="pfedhn/resources/gen_tv.png" align="middle" style='max-width: 50%'>
+            </center>
+            </figure>
+        Next, we study an important learning setup where new clients join, and a new model has to be trained for their data.
+        In the general case of sharing models across clients, this would require retraining (or finetuning) the shared model.
+        While PFL methods can adapt to this setting by finetuning the global model locally, pFedHN architecture offers a significant benefit.
+        Since the shared model learns a meta-model over the distribution of clients, it can in principle generalize to new clients without retraining.
+        Figure ?? presents the accuracy generalization gap as a function of the total variation distance.
+        We show that pFedHN achieves the best generalization performance for all levels of TV.
+        </p>
+<!--    <div class="section">-->
+<!--        <h2>Paper</h2>-->
+<!--        &lt;!&ndash; <hr> &ndash;&gt;-->
+<!--        <div>-->
+<!--            <div class="list-group">-->
+<!--                <a href="https://arxiv.org/abs/2010.04104"-->
+<!--                   class="list-group-item">-->
+<!--                   <center>-->
+<!--                    <img src="resources/paper.png" style="width:50%; margin-right:-20px; margin-top:-10px;">-->
+<!--                    </center>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="section">
+        <h2>Bibtex</h2>
+        <hr>
+        <div class="bibtexsection">
+ @inproceedings{Shamsian2021PersonalizedFL,
+  title={Personalized Federated Learning using Hypernetworks},
+  author={Aviv Shamsian and Aviv Navon and Ethan Fetaya and Gal Chechik},
+  booktitle={ICML},
+  year={2021}
+}
+        </div>
+    </div>
+    <hr>
+    <footer>
+    </footer>
+</div>
+<script src="jquery-3.5.1.slim.min.js"
+        ></script>
+<script src="npm/popper_js-1.16.0/dist/umd/popper.min.js"
+        ></script>
+<script src="bootstrap/4.5.0/js/bootstrap.min.js"
+        ></script>
+<hr>
+<footer>The website template is available at <a href="https://www.bootstrapcdn.com/">BootstrapCDN</a>.</footer>
+</body>
+</html>
